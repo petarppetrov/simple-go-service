@@ -27,7 +27,7 @@ var _ = Describe("Presenter", func() {
 	Describe("Get Data", func() {
 		When("Get Data is called with proper If-Modified-Since Header", func() {
 			It("should return a data list with JSON Content-Type", func() {
-				mockContext.Request.Header.Set("If-Modified-Since", "Mon, 02 Jan 2006 15:04:05 GMT")
+				mockContext.Request.Header.Set("If-Modified-Since", "02 Jan 2006 15:04:05 GMT")
 				presenter.GetData(mockContext)
 				Expect(mockContext.Writer.Status()).To(Equal(http.StatusOK))
 			})
