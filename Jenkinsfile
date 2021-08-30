@@ -1,4 +1,4 @@
-def testFailed = false
+def unitTestsFailed = false
 
 pipeline {
     agent any
@@ -28,7 +28,7 @@ pipeline {
                     } catch (err) {
                         println(err.getMessage())
                         unstable("The Unit Tests have failed. Please check log.")
-                        testFailed = true
+                        unitTestsFailed = true
                     }
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
         stage('Build Docker Image') {
             when {
                 expression {
-                    testFailed == false
+                    unitTestsFailed == false
                 }
             }
             steps {
