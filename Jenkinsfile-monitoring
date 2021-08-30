@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('HTTP call') {
+            steps {
+                script {
+                    try {
+                        def response = httpRequest url: 'http://localhost:8080/v1/data',
+                            customHeaders: [[name: "If-Modified-Since", value: "Mon Jan 2 15:04:05 2006"]]
+                        println("Status: "+response.status)
+                        println("Content: "+response.content)
+                    } catch (err) {
+                        println(err.getMessage())
+                        unstable("There has been a problem with the call towards the URL")
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Service is up and running."
+        }
+        unstable {
+            echo "There is a problem with the service. Sending notification via Slack..."
+            slackSend (message: "There is a problem with the service - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+    }
+}
