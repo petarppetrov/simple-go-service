@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: legacy
+  labels:
+    istio-injection: disabled
+---
+##################################################################################################
+# Sleep service
+##################################################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleep
+  namespace: legacy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sleep
+  template:
+    metadata:
+      labels:
+        app: sleep
+    spec:
+      containers:
+      - name: sleep
+        image: governmentpaas/curl-ssl
+        command: ["/bin/sleep", "30d"]
+        imagePullPolicy: IfNotPresent
+---
