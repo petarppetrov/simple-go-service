@@ -2,7 +2,9 @@ FROM golang:1.15.6-alpine3.12
 
 RUN mkdir /app
 
-ADD . /app
+ADD /cmd /app/cmd
+
+COPY go.mod go.sum /app/
 
 WORKDIR /app
 
